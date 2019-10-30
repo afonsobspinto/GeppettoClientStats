@@ -1,3 +1,4 @@
-`pip install PyGithub`
+`pip3 install PyGithub`
 
-`pip install -U python-dotenv`
+`pip3 install -U python-dotenv`
+
