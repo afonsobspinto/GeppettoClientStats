@@ -3,3 +3,4 @@
 .python-version
 *.iml
 __pycache__/
+node_modules/
