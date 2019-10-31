@@ -1,14 +1,22 @@
 from github import Github
+import csv
 
 from ComponentAnalysis import ComponentAnalysis
 from settings import *
 from utils import match_strings, is_javascript
+
 
 # Create a Github instance:
 g = Github(GITHUB_ACCESS_TOKEN)
 
 # Get repo to analyse
 repo = g.get_repo(REPO)
+
+usage_repos = []
+for r_name in USAGE_REPOS:
+    r = g.get_repo(r_name)
+    usage_repos.append(r)
+
 
 # Get all of the contents of the repository recursively
 components = []
@@ -20,10 +28,21 @@ while contents:
         contents.extend(repo.get_contents(file_content.path))
     elif file_content.type != "dir" and any([i in file_content.path for i in COMPONENTS_FOLDER_AUX])\
             and is_javascript(file_content.path):
-        components.append(ComponentAnalysis(file_content, component_factory))
+        components.append(ComponentAnalysis(file_content, component_factory, usage_repos))
 
-for component in components:
-    print(component)
 
+f = open(OUTPUT_FILE, 'w')
+header = ['name'] + [a for a in dir(components[0]) if not a.startswith('__') and
+          not a == 'name' and not a.endswith('Lookup')
+          and not callable(getattr(components[0], a))]
+with f:
+    writer = csv.writer(f)
+    writer.writerow(header)
+    for component in components:
+        writer.writerow([component.name] + [getattr(component, a) for a in dir(component) if not a.startswith('__') and
+                         not a == 'name' and not a.endswith('Lookup')
+                         and not callable(getattr(component, a))])
+    print(OUTPUT_FILE + " created")
+    f.close()
 
 
