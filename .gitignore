@@ -4,3 +4,4 @@
 *.iml
 __pycache__/
 node_modules/
+.~lock.stats.csv#

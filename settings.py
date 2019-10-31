@@ -7,8 +7,7 @@ REPO = 'openworm/geppetto-client'
 USAGE_REPOS = ['VirtualFlyBrain/geppetto-vfb', 'OpenSourceBrain/geppetto-osb', 'openworm/geppetto-application',
                'MetaCell/geppetto-hm', 'MetaCell/geppetto-netpyne', 'MetaCell/geppetto-nwbexplorer']
 
-COMPONENTS_FOLDER_PATH = ['js/components/interface']
-# COMPONENTS_FOLDER_PATH = ['js/components/controls', 'js/components/interface', 'js/components/widgets']
+COMPONENTS_FOLDER_PATH = ['js/components/controls', 'js/components/interface', 'js/components/widgets']
 
 COMPONENTS_FOLDER_AUX = ['controls', 'interface', 'widgets']
 
