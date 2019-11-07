@@ -20,8 +20,8 @@ class UsageAnalysis:
         pass
 
     def _check_imports(self, file_content, file_path, repo_name):
-        is_used = self.name.split('.')[0] in file_content
-        if is_used:
+        is_used = re.findall(rf"{self.name.split('.')[0]}$",file_content)
+        if len(is_used) != 0:
             self._add_usage(Usage.IMPORT, file_path, repo_name)
 
     def _check_add_component(self, file_content, file_path, repo_name):
