@@ -20,8 +20,13 @@ class UsageAnalysis:
         pass
 
     def _check_imports(self, file_content, file_path, repo_name):
-        is_used = self.name.split('.')[0] in file_content
+        is_used = re.findall(rf"import.*from.*{self.name.split('.')[0].split('/')[-1]}'",file_content)
         if is_used:
+            self._add_usage(Usage.IMPORT, file_path, repo_name)
+
+    def _check_requires(self, file_content, file_path, repo_name):
+        is_used = re.findall(rf"require\(.*{self.name.split('.')[0].split('/')[-1]}'\)",file_content)
+        if len(is_used):
             self._add_usage(Usage.IMPORT, file_path, repo_name)
 
     def _check_add_component(self, file_content, file_path, repo_name):
@@ -49,6 +54,7 @@ class UsageAnalysis:
     def check_usage(self, file_content, file_path, repo_name):
         if not hasattr(self, repo_name):
             setattr(self, repo_name, 0)
+        self._check_requires(file_content, file_path, repo_name)
         self._check_imports(file_content, file_path, repo_name)
         self._check_add_widget(file_content, file_path, repo_name)
         self._check_add_component(file_content, file_path, repo_name)
