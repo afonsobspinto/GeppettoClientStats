@@ -55,9 +55,9 @@ class UsageAnalysis:
 
     def get_row(self):
         outter = []
-        for r_name in USAGE_REPOS:
+        for usage_repo in USAGE_REPOS:
             inner = []
-            usages = getattr(self, r_name)
+            usages = getattr(self, usage_repo[0])
             if usages != 0:
                 for u in usages:
                     if len(u) == 0:

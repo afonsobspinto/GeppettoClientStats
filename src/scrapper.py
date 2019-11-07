@@ -27,8 +27,9 @@ while contents:
             print("Warning " + str(e) + "\n" + file_content.path + ' skipped \n')
 
 # Go over usage repos
-for r_name in USAGE_REPOS:
-    r = g.get_repo(r_name)
+for usage_repo in USAGE_REPOS:
+    r = g.get_repo(usage_repo[0])
+    r.get_branch(usage_repo[1])
     contents = r.get_contents("")
     while contents:
         file_content = contents.pop(0)
@@ -41,7 +42,10 @@ for r_name in USAGE_REPOS:
             except Exception as e:
                 print("Error " + str(e) + " " + file_content.path + '\n')
             for component in components:
-                component.check_usage(decoded_content, file_content.path, r_name)
+                try:
+                    component.check_usage(decoded_content, file_content.path, usage_repo[0])
+                except Exception as e:
+                    print("Error " + str(e) + " " + file_content.path + '\n')
 
 f = open(OUTPUT_FILE, 'w')
 header = ['name', 'type', 'last_modified', 'usage', 'has_jquery', 'is_react', 'is_es6',
