@@ -3,7 +3,7 @@ import csv
 
 from ComponentAnalysis import ComponentAnalysis
 from settings import *
-from utils import match_strings, is_javascript
+from utils import match_strings, is_javascript, get_type
 
 # Create a Github instance:
 g = Github(GITHUB_ACCESS_TOKEN)
@@ -19,9 +19,9 @@ while contents:
     file_content = contents.pop(0)
     if file_content.type == "dir" and any([match_strings(file_content.path, i) for i in COMPONENTS_FOLDER_PATH]):
         contents.extend(repo.get_contents(file_content.path))
-    elif file_content.type != "dir" and any([i in file_content.path for i in COMPONENTS_FOLDER_AUX])\
+    elif file_content.type != "dir" and (_type := get_type(file_content)) is not None \
             and is_javascript(file_content.path):
-        components.append(ComponentAnalysis(file_content, component_factory))
+        components.append(ComponentAnalysis(file_content, component_factory, _type))
 
 # Go over usage repos
 for r_name in USAGE_REPOS:
@@ -41,17 +41,16 @@ for r_name in USAGE_REPOS:
                 component.check_usage(decoded_content, file_content.path, r_name)
 
 f = open(OUTPUT_FILE, 'w')
-header = ['name'] + [a for a in dir(components[0]) if not a.startswith('__') and
-          not a == 'name' and not a.endswith('Lookup')
-          and not callable(getattr(components[0], a))]
+header = ['name', 'type', 'last_modified', 'has_jquery', 'is_react', 'is_es6',
+          'is_in_component_factory'] + USAGE_REPOS
+header2 = ['', '', '', '', '', '', '']
+for _ in USAGE_REPOS:
+    header2 += ['imported/required', 'add_widget', 'add_component']
 with f:
     writer = csv.writer(f)
     writer.writerow(header)
+    writer.writerow(header2)
     for component in components:
-        writer.writerow([component.name] + [getattr(component, a) for a in dir(component) if not a.startswith('__') and
-                         not a == 'name' and not a.endswith('Lookup')
-                         and not callable(getattr(component, a))])
+        writer.writerow(component.get_row())
     print(OUTPUT_FILE + " created")
     f.close()
-
-

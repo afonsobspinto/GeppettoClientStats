@@ -2,6 +2,8 @@ import github
 from github import Consts
 import re
 
+from settings import COMPONENTS_FOLDER_AUX
+
 
 def match_strings(s1, s2):
     return s1 in s2 or s2 in s1
@@ -23,3 +25,10 @@ def last_modified_fix(content):
     else:
         date = content._headers.get(Consts.RES_LAST_MODIFIED)
     return date
+
+
+def get_type(file_content):
+    for i in COMPONENTS_FOLDER_AUX:
+        if i in file_content.path:
+            return i
+    return None

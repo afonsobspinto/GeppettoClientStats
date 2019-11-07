@@ -1,3 +1,4 @@
+from UsageAnalysis import UsageAnalysis
 from utils import last_modified_fix, is_phrase_in
 
 
@@ -8,7 +9,7 @@ class ComponentAnalysis:
                    'componentWillUpdate', 'componentDidUpdate', 'componentWillUnmount']
     es6Lookup = ['=>', 'let', 'const']
 
-    def __init__(self, content, component_factory):
+    def __init__(self, content, component_factory, _type):
         self.name = content.path
         self.last_modified = last_modified_fix(content)
         decoded_content = None
@@ -21,7 +22,10 @@ class ComponentAnalysis:
             self.has_jquery = self.has_jquery(decoded_content)
             self.is_react = self.is_react(decoded_content)
             self.is_es6 = self.is_es6(decoded_content)
+
+        self.type = _type
         self.is_in_component_factory = self.is_in_component_factory(component_factory)
+        self.usage_analysis = UsageAnalysis(self.name)
 
     def __str__(self):
         return '{0: <100}'.format(self.name) + ' ' \
@@ -43,13 +47,8 @@ class ComponentAnalysis:
         return self.name.split('js/components/')[1].split('.')[0] in component_factory
 
     def check_usage(self, file_content, file_path, repo_name):
-        is_used = self.name.split('.')[0] in file_content
-        if not hasattr(self, repo_name):
-            setattr(self, repo_name, 0)
-        if is_used:
-            attr = getattr(self, repo_name)
-            if attr == 0:
-                setattr(self, repo_name, file_path)
-            else:
-                setattr(self, repo_name, attr + "\n" + file_path)
+        self.usage_analysis.check_usage(file_content, file_path, repo_name)
 
+    def get_row(self):
+        return [self.name, self.type, self.last_modified, self.has_jquery, self.is_react, self.is_es6,
+                self.is_in_component_factory] + self.usage_analysis.get_row()
