@@ -53,8 +53,9 @@ class ComponentAnalysis:
         self.usage_analysis.check_usage(file_content, file_path, repo_name)
 
     def get_row(self):
-        r = [self.name, self.type, self.last_modified, self.usage_analysis.get_total_usage(), self.has_jquery,
-             self.is_react, self.is_es6, self.has_geppetto_global, self.has_g_global, self.is_in_component_factory]
+        r = [self.name, self.type, self.last_modified, self.usage_analysis.get_total_usage(),
+             self.usage_analysis.get_total_applications_usage(), self.has_jquery, self.is_react, self.is_es6,
+             self.has_geppetto_global, self.has_g_global, self.is_in_component_factory]
         for i in self.usage_analysis.get_row():
             r += [i]
         return r
