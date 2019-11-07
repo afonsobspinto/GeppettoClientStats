@@ -11,7 +11,7 @@ Custom scrapper to evaluate geppetto client code quality stats
 1. `pip install -r requirements.txt`
 2. Create an _.env_ file with your [GITHUB_ACCESS_TOKEN](https://github.com/settings/tokens)
 3. Tune settings.py to your taste
-4. `python3 scrapper.py`
+4. `python3 src/scrapper.py`
 
 ## Built With
 - [PyGithub](https://github.com/PyGithub/PyGithub) - Typed interactions with the GitHub API v3
