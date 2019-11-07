@@ -4,12 +4,10 @@ load_dotenv()
 
 GITHUB_ACCESS_TOKEN = os.getenv('GITHUB_ACCESS_TOKEN')
 REPO = 'openworm/geppetto-client'
-# USAGE_REPOS = ['VirtualFlyBrain/geppetto-vfb', 'OpenSourceBrain/geppetto-osb', 'openworm/geppetto-application',
-#               'MetaCell/geppetto-hm', 'MetaCell/geppetto-netpyne', 'MetaCell/geppetto-nwbexplorer']
-USAGE_REPOS = ['OpenSourceBrain/geppetto-osb']
+USAGE_REPOS = ['VirtualFlyBrain/geppetto-vfb', 'OpenSourceBrain/geppetto-osb', 'openworm/geppetto-application',
+               'MetaCell/geppetto-hm', 'MetaCell/geppetto-netpyne', 'MetaCell/geppetto-nwbexplorer']
 
-# COMPONENTS_FOLDER_PATH = ['js/components/controls', 'js/components/interface', 'js/components/widgets']
-COMPONENTS_FOLDER_PATH = ['js/components/interface']
+COMPONENTS_FOLDER_PATH = ['js/components/controls', 'js/components/interface', 'js/components/widgets']
 
 COMPONENTS_FOLDER_AUX = ['controls', 'interface', 'widgets']
 
@@ -53,6 +51,4 @@ USAGE_MAP = {
     'GEPPETTO.Widgets.VARIABLEVISUALISER': 'variablevisualiser/controllers/VariableVisualiserController',
     'GEPPETTO.Widgets.CONNECTIVITY': 'connectivity/controllers/ConnectivityController',
     'GEPPETTO.Widgets.STACKVIEWER': 'stackViewer/controllers/StackViewerController',
-
-
 }

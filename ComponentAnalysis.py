@@ -8,6 +8,8 @@ class ComponentAnalysis:
                    'componentDidUpdate', 'componentWillReceiveProps', 'shouldComponentUpdate',
                    'componentWillUpdate', 'componentDidUpdate', 'componentWillUnmount']
     es6Lookup = ['=>', 'let', 'const']
+    GEPPETTO = 'GEPPETTO\.'
+    G = 'G\.'
 
     def __init__(self, content, component_factory, _type):
         self.name = content.path
@@ -17,6 +19,8 @@ class ComponentAnalysis:
         self.has_jquery = self.has_jquery(decoded_content)
         self.is_react = self.is_react(decoded_content)
         self.is_es6 = self.is_es6(decoded_content)
+        self.has_geppetto_global = self.has_geppetto_global(decoded_content)
+        self.has_g_global = self.has_g_global(decoded_content)
         self.is_in_component_factory = self.is_in_component_factory(component_factory)
         self.usage_analysis = UsageAnalysis(self.name)
 
@@ -39,13 +43,20 @@ class ComponentAnalysis:
     def is_in_component_factory(self, component_factory):
         return self.name.split('js/components/')[1].split('.')[0] in component_factory
 
+    def has_geppetto_global(self, decoded_content):
+        return is_phrase_in(self.GEPPETTO, decoded_content)
+
+    def has_g_global(self, decoded_content):
+        return is_phrase_in(self.G, decoded_content)
+
     def check_usage(self, file_content, file_path, repo_name):
         self.usage_analysis.check_usage(file_content, file_path, repo_name)
 
     def get_row(self):
         r = [self.name, self.type, self.last_modified, self.usage_analysis.get_total_usage(), self.has_jquery,
-             self.is_react, self.is_es6, self.is_in_component_factory]
-        for v in self.usage_analysis.get_row():
-            r += v
+             self.is_react, self.is_es6, self.has_geppetto_global, self.has_g_global, self.is_in_component_factory]
+        for i in self.usage_analysis.get_row():
+            r += [i]
         return r
+
 

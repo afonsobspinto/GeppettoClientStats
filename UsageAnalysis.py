@@ -56,16 +56,18 @@ class UsageAnalysis:
     def get_row(self):
         outter = []
         for r_name in USAGE_REPOS:
+            inner = []
             usages = getattr(self, r_name)
             if usages != 0:
                 for u in usages:
                     if len(u) == 0:
-                        outter.append([0])
+                        inner.append([0])
                     else:
-                        outter.append(u)
+                        inner.append(u)
             else:
                 for i in range(3):
-                    outter.append([0])
+                    inner.append([0])
+            outter.append(inner)
         return outter
 
     def get_total_usage(self):

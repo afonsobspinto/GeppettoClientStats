@@ -45,14 +45,11 @@ for r_name in USAGE_REPOS:
 
 f = open(OUTPUT_FILE, 'w')
 header = ['name', 'type', 'last_modified', 'usage', 'has_jquery', 'is_react', 'is_es6',
-          'is_in_component_factory'] + USAGE_REPOS
-header2 = ['', '', '', '', '', '', '', '']
-for _ in USAGE_REPOS:
-    header2 += ['imported/required', 'add_widget', 'add_component']
+          'has_geppetto_global', 'has_g_global', 'is_in_component_factory'] + USAGE_REPOS
+
 with f:
     writer = csv.writer(f)
     writer.writerow(header)
-    writer.writerow(header2)
     for component in components:
         writer.writerow(component.get_row())
     print(OUTPUT_FILE + " created")
