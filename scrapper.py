@@ -21,7 +21,10 @@ while contents:
         contents.extend(repo.get_contents(file_content.path))
     elif file_content.type != "dir" and (_type := get_type(file_content)) is not None \
             and is_javascript(file_content.path):
-        components.append(ComponentAnalysis(file_content, component_factory, _type))
+        try:
+            components.append(ComponentAnalysis(file_content, component_factory, _type))
+        except Exception as e:
+            print("Warning " + str(e) + "\n" + file_content.path + ' skipped \n')
 
 # Go over usage repos
 for r_name in USAGE_REPOS:

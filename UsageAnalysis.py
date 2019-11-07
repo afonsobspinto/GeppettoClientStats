@@ -12,6 +12,7 @@ class Usage(Enum):
 
 class UsageAnalysis:
     ADD_WIDGET = "G.addWidget"
+    ADD_COMPONENT = "GEPPETTO.ComponentFactory.addComponent"
 
     def __init__(self, name):
         self.name = name
@@ -21,6 +22,13 @@ class UsageAnalysis:
         is_used = self.name.split('.')[0] in file_content
         if is_used:
             self._add_usage(Usage.IMPORT, file_path, repo_name)
+
+    def _check_add_component(self, file_content, file_path, repo_name):
+        add_component_entries = re.findall(rf"{self.ADD_COMPONENT}\('(.*) *',",file_content)
+        for entry in add_component_entries:
+            if entry in USAGE_MAP.keys():
+                if USAGE_MAP[entry] in self.name:
+                    self._add_usage(Usage.ADD_COMPONENT, file_path, repo_name)
 
     def _check_add_widget(self, file_content, file_path, repo_name):
         add_widget_entries = re.findall(rf"{self.ADD_WIDGET}\((.*),",file_content)
@@ -41,13 +49,19 @@ class UsageAnalysis:
             setattr(self, repo_name, 0)
         self._check_imports(file_content, file_path, repo_name)
         self._check_add_widget(file_content, file_path, repo_name)
+        self._check_add_component(file_content, file_path, repo_name)
 
     def get_row(self):
-        row = []
+        outter = []
         for r_name in USAGE_REPOS:
             usages = getattr(self, r_name)
             if usages != 0:
-                for usage in usages:
-                    row += usage
-        return row
-
+                for u in usages:
+                    if len(u) == 0:
+                        outter.append([0])
+                    else:
+                        outter.append(u)
+            else:
+                for i in range(3):
+                    outter.append([0])
+        return outter

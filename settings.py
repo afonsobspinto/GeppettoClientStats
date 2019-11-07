@@ -9,7 +9,7 @@ REPO = 'openworm/geppetto-client'
 USAGE_REPOS = ['OpenSourceBrain/geppetto-osb']
 
 # COMPONENTS_FOLDER_PATH = ['js/components/controls', 'js/components/interface', 'js/components/widgets']
-COMPONENTS_FOLDER_PATH = ['js/components/widgets']
+COMPONENTS_FOLDER_PATH = ['js/components/interface']
 
 COMPONENTS_FOLDER_AUX = ['controls', 'interface', 'widgets']
 

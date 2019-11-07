@@ -12,18 +12,11 @@ class ComponentAnalysis:
     def __init__(self, content, component_factory, _type):
         self.name = content.path
         self.last_modified = last_modified_fix(content)
-        decoded_content = None
-        try:
-            decoded_content = content.decoded_content.decode("utf-8")
-        except Exception as e:
-            print("Error " + str(e) + "\n" + self.name + ' skipped \n')
-
-        if decoded_content:
-            self.has_jquery = self.has_jquery(decoded_content)
-            self.is_react = self.is_react(decoded_content)
-            self.is_es6 = self.is_es6(decoded_content)
-
         self.type = _type
+        decoded_content = content.decoded_content.decode("utf-8")
+        self.has_jquery = self.has_jquery(decoded_content)
+        self.is_react = self.is_react(decoded_content)
+        self.is_es6 = self.is_es6(decoded_content)
         self.is_in_component_factory = self.is_in_component_factory(component_factory)
         self.usage_analysis = UsageAnalysis(self.name)
 
@@ -50,5 +43,9 @@ class ComponentAnalysis:
         self.usage_analysis.check_usage(file_content, file_path, repo_name)
 
     def get_row(self):
-        return [self.name, self.type, self.last_modified, self.has_jquery, self.is_react, self.is_es6,
-                self.is_in_component_factory] + self.usage_analysis.get_row()
+        r = [self.name, self.type, self.last_modified, self.has_jquery, self.is_react, self.is_es6,
+             self.is_in_component_factory]
+        for v in self.usage_analysis.get_row():
+            r += v
+        return r
+
