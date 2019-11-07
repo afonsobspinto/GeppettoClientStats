@@ -44,9 +44,9 @@ for r_name in USAGE_REPOS:
                 component.check_usage(decoded_content, file_content.path, r_name)
 
 f = open(OUTPUT_FILE, 'w')
-header = ['name', 'type', 'last_modified', 'has_jquery', 'is_react', 'is_es6',
+header = ['name', 'type', 'last_modified', 'usage', 'has_jquery', 'is_react', 'is_es6',
           'is_in_component_factory'] + USAGE_REPOS
-header2 = ['', '', '', '', '', '', '']
+header2 = ['', '', '', '', '', '', '', '']
 for _ in USAGE_REPOS:
     header2 += ['imported/required', 'add_widget', 'add_component']
 with f:

@@ -16,6 +16,7 @@ class UsageAnalysis:
 
     def __init__(self, name):
         self.name = name
+        self.total_usage = 0
         pass
 
     def _check_imports(self, file_content, file_path, repo_name):
@@ -43,6 +44,7 @@ class UsageAnalysis:
             setattr(self, repo_name, [[], [], []])
             attr = getattr(self, repo_name)
         attr[usage.value].append(file_path)
+        self.total_usage += 1
 
     def check_usage(self, file_content, file_path, repo_name):
         if not hasattr(self, repo_name):
@@ -65,3 +67,6 @@ class UsageAnalysis:
                 for i in range(3):
                     outter.append([0])
         return outter
+
+    def get_total_usage(self):
+        return self.total_usage
