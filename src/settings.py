@@ -6,7 +6,7 @@ GITHUB_ACCESS_TOKEN = os.getenv('GITHUB_ACCESS_TOKEN')
 REPO = 'openworm/geppetto-client'
 USAGE_REPOS = [['VirtualFlyBrain/geppetto-vfb', 'development'], ['OpenSourceBrain/geppetto-osb', 'master'],
                 ['openworm/geppetto-application', 'master'], ['MetaCell/geppetto-hm', 'master'],
-                ['MetaCell/geppetto-netpyne', 'master'], ['MetaCell/geppetto-nwbexplorer', 'master'],
+                ['MetaCell/geppetto-netpyne', 'master'], ['MetaCell/nwbexplorer', 'master'],
                 ['openworm/geppetto-client', 'master'], ['MetaCell/geppetto-hnn', 'master']]
 
 
