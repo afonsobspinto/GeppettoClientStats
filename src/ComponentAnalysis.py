@@ -10,6 +10,7 @@ class ComponentAnalysis:
     es6Lookup = ['=>', 'let', 'const']
     GEPPETTO = 'GEPPETTO\.'
     G = 'G\.'
+    DEFINE = "define\(function"
 
     def __init__(self, content, component_factory, _type):
         self.name = content.path
@@ -23,6 +24,7 @@ class ComponentAnalysis:
         self.has_g_global = self.has_g_global(decoded_content)
         self.is_in_component_factory = self.is_in_component_factory(component_factory)
         self.usage_analysis = UsageAnalysis(self.name)
+        self.uses_define = self.uses_define(decoded_content)
 
     def __str__(self):
         return '{0: <100}'.format(self.name) + ' ' \
@@ -52,10 +54,13 @@ class ComponentAnalysis:
     def check_usage(self, file_content, file_path, repo_name):
         self.usage_analysis.check_usage(file_content, file_path, repo_name)
 
+    def uses_define(self, decoded_content):
+        return is_phrase_in(self.DEFINE, decoded_content)
+
     def get_row(self):
         r = [self.name, self.type, self.last_modified, self.usage_analysis.get_total_usage(),
              self.usage_analysis.get_total_applications_usage(), self.has_jquery, self.is_react, self.is_es6,
-             self.has_geppetto_global, self.has_g_global, self.is_in_component_factory]
+             self.has_geppetto_global, self.has_g_global, self.uses_define, self.is_in_component_factory]
         for i in self.usage_analysis.get_row():
             r += [i]
         return r

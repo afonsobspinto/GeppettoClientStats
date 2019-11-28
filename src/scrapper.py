@@ -49,7 +49,7 @@ for usage_repo in USAGE_REPOS:
 
 f = open(OUTPUT_FILE, 'w')
 header = ['name', 'type', 'last_modified', 'usage', 'applications_usage', 'has_jquery', 'is_react', 'is_es6',
-          'has_geppetto_global', 'has_g_global', 'is_in_component_factory'] + USAGE_REPOS
+          'has_geppetto_global', 'has_g_global', 'uses_define', 'is_in_component_factory'] + USAGE_REPOS
 
 with f:
     writer = csv.writer(f)
